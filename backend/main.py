@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from database import init_db, get_db
-from config import IS_POSTGRES
+from config import IS_POSTGRES, DATABASE_URL
 from models import (
     LoginRequest,
     RegisterRequest,
@@ -48,9 +48,17 @@ app.add_middleware(
 
 @app.get("/")
 def root():
+    db_host = "Not Set"
+    if DATABASE_URL:
+        try:
+            # Extract host without credentials
+            db_host = DATABASE_URL.split("@")[-1].split("/")[0]
+        except Exception:
+            db_host = "Configured"
     return {
         "status": "online",
         "database": "Supabase (PostgreSQL)" if IS_POSTGRES else "MySQL (Local)",
+        "db_host": db_host,
         "app": "SalaryPro Backend API",
         "docs_url": "/docs",
         "timestamp": datetime.now().isoformat(),
