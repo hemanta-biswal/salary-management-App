@@ -4,14 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // - Android Emulator: 10.0.2.2:8000
-  // - Web / Desktop: 127.0.0.1:8000
-  // - Physical Device: Set to your PC's Wi-Fi IP address
-  static String get baseUrl {
-    if (kIsWeb) return 'http://127.0.0.1:8000';
-    if (Platform.isAndroid) return 'http://10.0.2.2:8000';
-    return 'http://127.0.0.1:8000';
-  }
+  // Live Cloud Backend on Render
+  static String get baseUrl => 'https://salary-management-app-1.onrender.com';
 
   // 1. Authentication
   static Future<Map<String, dynamic>> login(String email, String password) async {
