@@ -49,16 +49,19 @@ app.add_middleware(
 @app.get("/")
 def root():
     db_host = "Not Set"
+    db_user = "Unknown"
     if DATABASE_URL:
         try:
             # Extract host without credentials
             db_host = DATABASE_URL.split("@")[-1].split("/")[0]
+            db_user = DATABASE_URL.split("://")[-1].split(":")[0]
         except Exception:
             db_host = "Configured"
     return {
         "status": "online",
         "database": "Supabase (PostgreSQL)" if IS_POSTGRES else "MySQL (Local)",
         "db_host": db_host,
+        "db_user": db_user,
         "app": "SalaryPro Backend API",
         "docs_url": "/docs",
         "timestamp": datetime.now().isoformat(),
